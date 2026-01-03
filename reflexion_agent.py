@@ -10,8 +10,12 @@ def run_agent(question: str):
 
     # Save the graph visualization
     try:
-        app.get_graph().draw_mermaid_png(output_file_path="graph.png")
-        print("--- Graph saved as 'graph.png' ---")
+        # Use draw_png if pygraphviz is installed, or draw_mermaid_png if not
+        # Trying a slightly more robust way to get png data
+        png_data = app.get_graph().draw_png()
+        with open("reflexion_agent/graph.png", "wb") as f:
+            f.write(png_data)
+        print("--- Graph saved as 'reflexion_agent/graph.png' ---")
     except Exception as e:
         # Fallback if dependencies are missing
         print(f"--- Notice: Could not save graph visualization: {e} ---")
